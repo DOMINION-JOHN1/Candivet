@@ -12,6 +12,16 @@ from langchain.prompts import PromptTemplate
 
 app = Flask(__name__)
 
+
+#save uploaded file and return path
+def save_uploaded_file(uploaded_file):
+    # Create a temporary directory
+    temp_dir = tempfile.gettempdir()
+    file_path = os.path.join(temp_dir, uploaded_file.name)
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    return file_path
+
 # Function to load and extract content from a PDF using PyPDFLoader
 def load_pdf_content(pdf_file):
     content = []
@@ -27,9 +37,10 @@ def load_pdf_content(pdf_file):
 def upload_job_description():
     # Retrieve job description from the request
     job_description_file = request.files['job_description']
+    job_description_path = save_uploaded_file(job_description_file)
     
     # Extract content from the job description file
-    job_description_loader = PyPDFLoader(job_description_file)
+    job_description_loader = PyPDFLoader(job_description_path)
     job_description = job_description_loader.load()
     
     # Save the job description content to a global variable or database
@@ -52,7 +63,9 @@ def process_cvs():
     for cv_file in cv_files[:5]:  # Limit to any 5 CVs
         separator = f"\n{'='*40}\nContent from: {cv_file.filename}\n{'='*40}\n"
         pages_content.append(separator)  # Add a separator for each CV
-        pdf_content = load_pdf_content(cv_file)
+
+        cv_file_path = save_uploaded_file(cv_file)
+        pdf_content = load_pdf_content(cv_file_path)
         
         for document in pdf_content:
             pages_content.append(document.page_content)
