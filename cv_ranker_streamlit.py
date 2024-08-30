@@ -19,9 +19,10 @@ def load_pdf_content(pdf_file):
     return content
 
 
-# Function to save the uploaded file temporarily
 def save_uploaded_file(uploaded_file):
-    file_path = os.path.join("/tmp", uploaded_file.name)  # Save to a temporary directory
+    # Create a temporary directory
+    temp_dir = tempfile.gettempdir()
+    file_path = os.path.join(temp_dir, uploaded_file.name)
     with open(file_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
     return file_path
