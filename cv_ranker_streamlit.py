@@ -6,6 +6,7 @@ from langchain.prompts import PromptTemplate
 
 GEMINI_API_KEY= st.secrets["GEMINI_API_KEY"]
 genai.configure(api_key=GEMINI_API_KEY)
+
 # Function to load and extract content from a PDF using PyPDFLoader
 def load_pdf_content(pdf_file):
     content = []
@@ -17,6 +18,15 @@ def load_pdf_content(pdf_file):
         st.error(f"Failed to load PDF from {pdf_file.name}: {e}")
     return content
 
+
+# Function to save the uploaded file temporarily
+def save_uploaded_file(uploaded_file):
+    file_path = os.path.join("/tmp", uploaded_file.name)  # Save to a temporary directory
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    return file_path
+
+
 # Streamlit app
 def main():
     st.title("CV Ranking and Summarization App")
@@ -26,8 +36,11 @@ def main():
     job_description_file = st.file_uploader("Choose a Job Description PDF", type="pdf")
     
     if job_description_file:
+
+        # Save the uploaded file and get the file path
+        job_description_path = save_uploaded_file(job_description_file)
         # Extract content from the job description file
-        job_description_loader = PyPDFLoader(job_description_file.name)
+        job_description_loader = PyPDFLoader(job_description_path)
         job_description = job_description_loader.load()
         job_description_content = "\n".join([doc.page_content for doc in job_description])
         st.success("Job description uploaded successfully!")
@@ -45,7 +58,9 @@ def main():
         for cv_file in cv_files[:5]:  # Limit to any 5 CVs
             separator = f"\n{'='*40}\nContent from: {cv_file.name}\n{'='*40}\n"
             pages_content.append(separator)  # Add a separator for each CV
-            pdf_content = load_pdf_content(cv_file.name)
+            # Save the uploaded file and get the file path
+            cv_file_path = save_uploaded_file(cv_file)
+            pdf_content = load_pdf_content(cv_file_path)
             
             for document in pdf_content:
                 pages_content.append(document.page_content)
