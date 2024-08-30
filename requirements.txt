@@ -1,0 +1,8 @@
+streamlit
+pydantic
+langchain
+requests
+langchain-core
+langchain_community
+pypdf
+PyPDF2
