@@ -1,12 +1,7 @@
-
-!pip install langchain
-!pip install langchain_community
-!pip install --upgrade langchain-core
-!pip install pypdf
-!pip install PyPDF2
-
 from flask import Flask, request, jsonify
 import google.generativeai as genai
+import tempfile
+import os
 from langchain.document_loaders import PyPDFLoader
 from langchain.prompts import PromptTemplate
 
