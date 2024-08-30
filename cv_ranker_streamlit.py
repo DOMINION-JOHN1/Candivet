@@ -92,7 +92,7 @@ def main():
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(formatted_prompt)
             st.header("Ranked CVs and Summaries")
-            st.text(response.text)
+            st.markdown(response.text)
     elif not job_description_content:
         st.warning("Please upload the job description before processing CVs.")
 
