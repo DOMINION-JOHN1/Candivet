@@ -32,7 +32,7 @@ def save_uploaded_file(uploaded_file):
 
 # Streamlit app
 def main():
-    st.title("CV Ranking and Summarization App")
+    st.title("Candivet")
 
     # Step 1: Upload Job Description
     st.header("Upload Job Description")
@@ -91,7 +91,6 @@ def main():
         if st.button("Process CVs"):
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(formatted_prompt)
-            st.header("Ranked CVs and Summaries")
             st.markdown(response.text)
     elif not job_description_content:
         st.warning("Please upload the job description before processing CVs.")
