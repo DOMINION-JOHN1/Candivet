@@ -6,3 +6,4 @@ langchain-core
 langchain_community
 pypdf
 PyPDF2
+google-generativeai
