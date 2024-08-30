@@ -27,7 +27,7 @@ def main():
     
     if job_description_file:
         # Extract content from the job description file
-        job_description_loader = PyPDFLoader(job_description_file)
+        job_description_loader = PyPDFLoader(job_description_file.name)
         job_description = job_description_loader.load()
         job_description_content = "\n".join([doc.page_content for doc in job_description])
         st.success("Job description uploaded successfully!")
@@ -45,7 +45,7 @@ def main():
         for cv_file in cv_files[:5]:  # Limit to any 5 CVs
             separator = f"\n{'='*40}\nContent from: {cv_file.name}\n{'='*40}\n"
             pages_content.append(separator)  # Add a separator for each CV
-            pdf_content = load_pdf_content(cv_file)
+            pdf_content = load_pdf_content(cv_file.name)
             
             for document in pdf_content:
                 pages_content.append(document.page_content)
