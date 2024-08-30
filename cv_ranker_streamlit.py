@@ -5,7 +5,6 @@ from langchain.prompts import PromptTemplate
 
 
 GEMINI_API_KEY= st.secrets["GEMINI_API_KEY"]
-os.getenv("GEMINI_API_KEY")
 genai.configure(api_key=GEMINI_API_KEY)
 # Function to load and extract content from a PDF using PyPDFLoader
 def load_pdf_content(pdf_file):
