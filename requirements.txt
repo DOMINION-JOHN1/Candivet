@@ -7,3 +7,6 @@ langchain_community
 pypdf
 PyPDF2
 google-generativeai
+flask-cors
+Werkzeug
+gunicorn
