@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 import google.generativeai as genai
+from flask_cors import CORS
 import tempfile
 import os
 from langchain.document_loaders import PyPDFLoader
 from langchain.prompts import PromptTemplate
 
 app = Flask(__name__)
-
+CORS(app)
 
 #save uploaded file and return path
 def save_uploaded_file(uploaded_file):
@@ -88,7 +89,7 @@ def process_cvs():
     model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(formatted_prompt)
     
-    return jsonify({'ranked_cvs': response.text})
+    return jsonify({'Response': response.text})
 
 if __name__ == '__main__':
     app.run(debug=True)
